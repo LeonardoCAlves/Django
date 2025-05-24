@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+</head>
+<body>
+    <h2>Login</h2>
+    {% if form.errors %}
+        <p style="color:red;">Usuário ou senha inválidos.</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label>Usuário:</label><br>
+        <input type="text" name="username"><br>
+        <label>Senha:</label><br>
+        <input type="password" name="password"><br>
+        <button type="submit">Entrar</button>
+    </form>
+    {% if not user.is_authenticated %}
+        <p><a href="{% url 'registrar' %}">Registrar nova conta</a></p>
+    {% endif %}
+</body>
+</html>

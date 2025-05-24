@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+</head>
+<body>
+    <h1>Bem-vindo, {{ user.username }}!</h1>
+    {% if user.is_authenticated %}
+        <p>Você está logado.</p>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit">Sair</button>
+        </form>
+    {% else %}
+        <p>Você não está logado.</p>
+        <p><a href="{% url 'login' %}">Entrar</a></p>
+    {% endif %}
+    {% if not user.is_authenticated %}
+        <p><a href="{% url 'registrar' %}">Registrar nova conta</a></p>
+    {% endif %}
+
+</body>
+</html>

@@ -1,11 +1,13 @@
 from pathlib import Path
+import os
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'django-insecure-2iiqq$^$x6ar5p7cw36eq)8sbe(t@8e97=zsp51_yiu!c2vzus'
 DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    'autenticacao',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -13,6 +15,27 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+# Diretório de templates
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # <- a pasta templates na raiz do projeto
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+LOGIN_URL = 'login'    # nome da sua URL de login (conforme seu urls.py)
+LOGIN_REDIRECT_URL = 'home'  # para onde ir após login (exemplo)
+LOGOUT_REDIRECT_URL = 'login' # para onde ir após logout
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -25,32 +48,19 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sistema.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'sistema.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sistema_db',
-        'USER': 'ebony',
-        'PASSWORD': 'sua_senha',
+        'NAME': 'sis_db',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c client_encoding=utf8'
+        }
     }
 }
 
@@ -75,3 +85,8 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
